@@ -333,13 +333,13 @@ def find_drivers_by_users(users):
                 
         return drivers
 
-def show_irqs(irq_list, cpu_list):
+def show_irqs_used_by_network_interface_cards(irq_list, cpu_list):
         global irqs
         if not irqs:
                 irqs = procfs.interrupts()
 
         if sys.stdout.isatty():
-                print("%4s %-16s %8s" % ("#", _("users"), _("affinity"),))
+                print("%4s  %-12s %-12s  %s" % ("IRQ", "NIC(-TxRx-N)", "CPU-affinity", "NIC-driver"))
         sorted_irqs = []
         for k in list(irqs.keys()):
                 try:
@@ -358,7 +358,15 @@ def show_irqs(irq_list, cpu_list):
         for irq in sorted_irqs:
                 affinity = format_affinity(irqs[irq]["affinity"])
                 users = irqs[irq]["users"]
-                print("%4d %-16s %8s" % (irq, ",".join(users), affinity), end=' ')
+                is_nic = False
+                for str in users:
+                        # 网卡IRQ名称必定以en开头或eth开头
+                        is_nic = str.startswith("en") or str.startswith("eth")
+                        if is_nic:
+                                break
+                if not is_nic:
+                        continue
+                print("%4d  %-12s %-12s" % (irq, ",".join(users), affinity), end=' ')
                 drivers = find_drivers_by_users(users)
                 if drivers:
                         print(" %s" % ",".join(drivers))
@@ -577,7 +585,7 @@ def main():
                         # resolved to IRQs, don't show all IRQs.
                         if not irq_list and irq_list_str:
                                 continue
-                        show_irqs(irq_list, cpu_list)
+                        show_irqs_used_by_network_interface_cards(irq_list, cpu_list)
                 elif o in ("-n", "--show_sockets"):
                         show_sockets = True
                 elif o in ("-m", "--move", "-x", "--spread"):
