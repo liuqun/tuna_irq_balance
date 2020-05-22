@@ -71,9 +71,9 @@ def print_irqs_used_by_network_interface_cards(irq_list, cpu_list):
                 affinity = format_affinity(irqs[irq]["affinity"])
                 users = irqs[irq]["users"]
                 is_nic = False
-                for str in users:
+                for i in users:
                         # 网卡IRQ名称必定以en开头或eth开头
-                        is_nic = str.startswith("en") or str.startswith("eth")
+                        is_nic = i.startswith("en") or i.startswith("eth")
                         if is_nic:
                                 break
                 if not is_nic:
