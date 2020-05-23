@@ -29,6 +29,8 @@ def find_drivers_by_users(users):
         nics = get_nics()
         drivers = []
         for u in users:
+                if u.startswith("i40e-"):
+                        return ["i40e"]
                 try:
                         idx = u.index('-')
                         u = u[:idx]
@@ -51,7 +53,7 @@ def print_irqs_used_by_network_interface_cards(irq_list, cpu_list):
         irqs = procfs.interrupts()
 
         if sys.stdout.isatty():
-                print("%4s  %-12s %-12s  %s" % ("IRQ", "NIC(-TxRx-N)", "CPU-affinity", "NIC-driver"))
+                print("%4s %8s %-25s  %-10s" % ("IRQ", "CPU-lcore", "NIC-TxRx-Queue", "NIC-driver"))
         sorted_irqs = []
         for k in list(irqs.keys()):
                 try:
@@ -73,15 +75,15 @@ def print_irqs_used_by_network_interface_cards(irq_list, cpu_list):
                 is_nic = False
                 for i in users:
                         # 网卡IRQ名称必定以en开头或eth开头
-                        is_nic = i.startswith("en") or i.startswith("eth")
+                        is_nic = i.startswith("en") or i.startswith("eth") or i.startswith("i40e-")
                         if is_nic:
                                 break
                 if not is_nic:
                         continue
-                print("%4d  %-12s %-12s" % (irq, ",".join(users), affinity), end=' ')
+                print("%4d %8s  %-25s" % (irq, affinity, ",".join(users)), end=' ')
                 drivers = find_drivers_by_users(users)
                 if drivers:
-                        print(" %s" % ",".join(drivers))
+                        print(" %-10s" % ",".join(drivers))
                 else:
                         print()
 
