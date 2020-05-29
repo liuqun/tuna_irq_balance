@@ -14,22 +14,31 @@ sudo apt-get install -y \
 
 ```
 git clone http://xinfanshi.trapbox.cn:13080/liuqun/irq-toolbox.git
+
 cd irq-toolbox
-./print-irq-list.py
+
+python3 ./print-irq-list.py
 ```
 
 # 运行效果如下：
+
 ```
-# ./print-irq-list.py 
- IRQ  NIC(-TxRx-N) CPU-affinity  NIC-driver
- 124  eno1         0,1,2,3       igb
- 125  eno1-TxRx-0  0,1,2,3       igb
- 126  eno1-TxRx-1  0,1,2,3       igb
- 127  eno1-TxRx-2  0,1,2,3       igb
- 128  eno1-TxRx-3  0,1,2,3       igb
- 131  eno2         0,1,2,3       igb
- 132  eno2-TxRx-0  0,1,2,3       igb
- 133  eno2-TxRx-1  0,1,2,3       igb
- 134  eno2-TxRx-2  0,1,2,3       igb
- 135  eno2-TxRx-3  0,1,2,3       igb
+# python3 ./print-irq-list.py 
+ IRQ CPU-lcore NIC-TxRx-Queue   NIC-driver
+ 126        2  eno1             igb
+ 127  0,1,2,3  eno1-TxRx-0      igb
+ 128  0,1,2,3  eno1-TxRx-1      igb
+ 129  0,1,2,3  eno1-TxRx-2      igb
+ 130  0,1,2,3  eno1-TxRx-3      igb
+ 131        3  eno2             igb
+ 132        0  eno2-TxRx-0      igb
+ 133        1  eno2-TxRx-1      igb
+ 134        2  eno2-TxRx-2      igb
+ 135        3  eno2-TxRx-3      igb  
+
+# 联想千兆网卡服务器
+# CPU型号：酷睿i3-7100(开启HT超线程后CPU=4逻辑核)
+# 网卡型号
+eno1  I210 Gigabit Network Connection
+eno2  I210 Gigabit Network Connection
 ```
