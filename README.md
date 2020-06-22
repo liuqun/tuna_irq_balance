@@ -45,7 +45,7 @@ sudo tuna --threads "*" --cpus 0-3 --move --spread
 安装上述开发工具后，克隆（或下载）本项目，并在本机运行 IRQ Toolbox 工具箱内的脚本工具：
 
 ```
-git clone http://xinfanshi.trapbox.cn:13080/liuqun/irq-toolbox.git
+git clone https://github.com/liuqun/tuna_irq_balance.git
 
 cd irq-toolbox
 
