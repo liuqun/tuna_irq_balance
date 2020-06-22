@@ -47,7 +47,7 @@ sudo tuna --threads "*" --cpus 0-3 --move --spread
 ```
 git clone https://github.com/liuqun/tuna_irq_balance.git
 
-cd irq-toolbox
+cd tuna_irq_balance
 
 python3 ./print-irq-list.py
 ```
